@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Test PKN Kelas XI — Semester 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --merah: #c0392b;
+    --kuning: #f39c12;
+    --biru: #1a3a5c;
+    --biru-terang: #2980b9;
+    --putih: #fdfaf5;
+    --abu: #eceff4;
+    --gelap: #1c1c2e;
+    --hijau: #27ae60;
+    --ungu: #8e44ad;
+    --aksen: #e74c3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--putih);
+    color: var(--gelap);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--biru);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; top:0; left:0; right:0; bottom:0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    position: relative;
+  }
+  .header p { font-size: 0.95rem; opacity: 0.8; margin-top: 0.4rem; position: relative; }
+  .badge-row { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; position: relative; }
+  .badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  /* NAV TABS */
+  .nav {
+    display: flex; overflow-x: auto;
+    background: white;
+    border-bottom: 2px solid var(--abu);
+    gap: 0;
+  }
+  .nav-btn {
+    flex: none;
+    padding: 1rem 1.4rem;
+    border: none; background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; color: #888;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn.active { color: var(--biru); border-bottom-color: var(--biru); }
+  .nav-btn:hover:not(.active) { color: var(--gelap); background: var(--abu); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* RANGKUMAN */
+  .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .materi-card {
+    background: white;
+    border-radius: 12px;
+    border-left: 4px solid var(--biru);
+    padding: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .materi-card.merah { border-left-color: var(--merah); }
+  .materi-card.kuning { border-left-color: var(--kuning); }
+  .materi-card.hijau { border-left-color: var(--hijau); }
+  .materi-card.ungu { border-left-color: var(--ungu); }
+  .materi-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 0.6rem; }
+  .materi-card ul { padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.7; color: #444; }
+  .materi-card p { font-size: 0.85rem; line-height: 1.6; color: #444; }
+
+  /* QUIZ CONTAINER */
+  .quiz-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .quiz-header h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+  .score-badge {
+    background: var(--biru); color: white;
+    padding: 0.4rem 1rem; border-radius: 20px;
+    font-weight: 600; font-size: 0.85rem;
+  }
+
+  /* PROGRESS */
+  .progress-bar { background: var(--abu); border-radius: 10px; height: 8px; margin-bottom: 1.5rem; }
+  .progress-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--biru), var(--biru-terang)); transition: width 0.4s ease; }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .q-number { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--biru-terang); margin-bottom: 0.5rem; text-transform: uppercase; }
+  .q-text { font-size: 1rem; font-weight: 500; line-height: 1.6; margin-bottom: 1.2rem; }
+  .q-type-badge {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    margin-bottom: 0.8rem;
+  }
+  .type-pg { background: #dbeafe; color: #1d4ed8; }
+  .type-bs { background: #dcfce7; color: #166534; }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 0.6rem; }
+  .option-btn {
+    display: flex; align-items: center; gap: 0.8rem;
+    padding: 0.85rem 1.1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--biru); background: #eff6ff; }
+  .option-btn.correct { border-color: var(--hijau); background: #f0fdf4; color: #166534; font-weight: 600; }
+  .option-btn.incorrect { border-color: var(--merah); background: #fff5f5; color: #991b1b; }
+  .option-btn.missed { border-color: var(--hijau); background: #f0fdf4; opacity: 0.7; }
+  .option-circle {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--abu); display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+  }
+  .option-btn.correct .option-circle { background: var(--hijau); color: white; }
+  .option-btn.incorrect .option-circle { background: var(--merah); color: white; }
+
+  /* TRUE FALSE */
+  .tf-options { display: flex; gap: 1rem; }
+  .tf-btn {
+    flex: 1; padding: 1rem;
+    border: 2px solid #e5e7eb; border-radius: 10px;
+    background: white; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    transition: all 0.15s;
+  }
+  .tf-btn:hover:not(:disabled) { border-color: var(--biru); background: #eff6ff; }
+  .tf-btn.correct { border-color: var(--hijau); background: #f0fdf4; color: #166534; }
+  .tf-btn.incorrect { border-color: var(--merah); background: #fff5f5; color: #991b1b; }
+
+  /* EXPLANATION */
+  .explanation {
+    margin-top: 1rem; padding: 1rem;
+    background: #fffbeb; border-left: 4px solid var(--kuning);
+    border-radius: 0 8px 8px 0; font-size: 0.85rem; line-height: 1.6;
+    display: none;
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--gelap); }
+
+  /* BUTTONS */
+  .btn {
+    padding: 0.85rem 2rem; border: none; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary { background: var(--biru); color: white; }
+  .btn-primary:hover { background: #0f2540; transform: translateY(-1px); }
+  .btn-secondary { background: var(--abu); color: var(--gelap); }
+  .btn-secondary:hover { background: #d1d5db; }
+  .btn-danger { background: var(--merah); color: white; }
+
+  /* RESULTS */
+  .result-card {
+    background: white; border-radius: 16px; padding: 2.5rem;
+    text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .result-score { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; }
+  .result-score.lulus { color: var(--hijau); }
+  .result-score.gagal { color: var(--merah); }
+  .result-label { font-size: 1.1rem; font-weight: 600; margin: 0.5rem 0; }
+  .result-detail { color: #666; font-size: 0.9rem; }
+  .result-bars { display: flex; gap: 0.5rem; margin: 1.5rem 0; justify-content: center; flex-wrap: wrap; }
+  .result-bar {
+    padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+  }
+  .rb-benar { background: #dcfce7; color: #166534; }
+  .rb-salah { background: #fee2e2; color: #991b1b; }
+
+  /* TTS */
+  .tts-container { overflow-x: auto; }
+  .tts-grid { display: inline-grid; gap: 3px; }
+  .tts-row { display: flex; gap: 3px; }
+  .tts-cell {
+    width: 38px; height: 38px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700;
+    background: white; color: var(--gelap);
+    position: relative;
+  }
+  .tts-cell.black { background: var(--biru); border-color: var(--biru); }
+  .tts-cell.number::before {
+    content: attr(data-num);
+    position: absolute; top: 1px; left: 2px;
+    font-size: 0.5rem; font-weight: 700; color: var(--biru-terang);
+  }
+  .tts-cell.correct-tts { background: #dcfce7; border-color: var(--hijau); }
+  .tts-cell.wrong-tts { background: #fee2e2; border-color: var(--merah); }
+
+  /* WORD SEARCH */
+  .ws-grid { display: inline-grid; gap: 2px; }
+  .ws-row { display: flex; gap: 2px; }
+  .ws-cell {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700;
+    border-radius: 4px; background: var(--abu); color: var(--gelap);
+    cursor: pointer; transition: background 0.1s;
+    user-select: none;
+  }
+  .ws-cell:hover { background: #bfdbfe; }
+  .ws-cell.selected { background: #93c5fd; }
+  .ws-cell.found { background: #86efac; color: #166534; }
+
+  .word-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .word-chip {
+    padding: 0.3rem 0.8rem; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 600;
+    background: var(--abu); color: #555;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .word-chip.found { background: #dcfce7; color: #166534; border-color: var(--hijau); text-decoration: line-through; }
+
+  /* MATCHING */
+  .match-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .match-col { display: flex; flex-direction: column; gap: 0.5rem; }
+  .match-item {
+    padding: 0.8rem 1rem; border: 2px solid #e5e7eb;
+    border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+    background: white; transition: all 0.15s;
+  }
+  .match-item:hover { border-color: var(--biru); background: #eff6ff; }
+  .match-item.selected { border-color: var(--biru-terang); background: #dbeafe; }
+  .match-item.matched { border-color: var(--hijau); background: #f0fdf4; cursor: default; }
+  .match-item.wrong-match { border-color: var(--merah); background: #fff5f5; }
+
+  .nav-row { display: flex; gap: 1rem; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+  .q-counter { font-size: 0.85rem; color: #666; }
+
+  /* TTS INPUT */
+  .tts-clues { margin-top: 1.5rem; }
+  .tts-clue-section h4 { font-weight: 700; color: var(--biru); margin-bottom: 0.5rem; }
+  .tts-clue { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; font-size: 0.85rem; }
+  .tts-clue-num { font-weight: 700; min-width: 24px; }
+  .tts-input {
+    border: 2px solid #e5e7eb; border-radius: 6px;
+    padding: 0.35rem 0.6rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; width: 180px; text-transform: uppercase;
+    font-weight: 700; letter-spacing: 0.1em;
+  }
+  .tts-input:focus { outline: none; border-color: var(--biru); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; margin-bottom: 0.3rem;
+  }
+  .section-sub { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .divider { height: 2px; background: linear-gradient(90deg, var(--biru), transparent); margin: 1.5rem 0; }
+
+  /* FILL IN BLANK */
+  .fill-input {
+    border: none; border-bottom: 2px solid var(--biru);
+    padding: 0.2rem 0.4rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600; width: 120px;
+    background: transparent; color: var(--gelap);
+  }
+  .fill-input:focus { outline: none; border-bottom-color: var(--aksen); }
+  .fill-input.correct-fill { border-bottom-color: var(--hijau); color: var(--hijau); }
+  .fill-input.wrong-fill { border-bottom-color: var(--merah); color: var(--merah); }
+
+  @media(max-width:600px) {
+    .section { padding: 1rem; }
+    .materi-grid { grid-template-columns: 1fr; }
+    .match-container { grid-template-columns: 1fr; }
+    .tts-cell { width: 30px; height: 30px; font-size: 0.8rem; }
+    .ws-cell { width: 28px; height: 28px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📚 Mock Test PKN Kelas XI</h1>
+  <p>Semester 2 — Kurikulum Merdeka</p>
+  <div class="badge-row">
+    <span class="badge">5 Pilgan</span>
+    <span class="badge">10 Benar/Salah</span>
+    <span class="badge">10 TTS</span>
+    <span class="badge">5 Temukan Kata</span>
+    <span class="badge">5 Cari Kata</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('rangkuman')">📖 Rangkuman</button>
+  <button class="nav-btn" onclick="showTab('pilgan')">🔵 Pilihan Ganda</button>
+  <button class="nav-btn" onclick="showTab('benarsalah')">✅ Benar/Salah</button>
+  <button class="nav-btn" onclick="showTab('tts')">🔠 TTS</button>
+  <button class="nav-btn" onclick="showTab('temukan')">🔍 Temukan Kata</button>
+  <button class="nav-btn" onclick="showTab('carikata')">🎯 Cari & Temukan</button>
+</nav>
+
+<!-- ===================== RANGKUMAN ===================== -->
+<section class="section active" id="rangkuman">
+  <h2 class="section-title">Rangkuman Materi Semester 2</h2>
+  <p class="section-sub">Pendidikan Pancasila & Kewarganegaraan — Kelas XI</p>
+  <div class="materi-grid">
+
+    <div class="materi-card biru">
+      <h3>⚖️ Mahkamah Internasional</h3>
+      <ul>
+        <li>Organ utama PBB untuk penyelesaian sengketa hukum antarnegara</li>
+        <li>Berkedudukan di Den Haag, Belanda</li>
+        <li>Keputusannya bersifat <strong>mengikat dan final</strong></li>
+        <li>Hanya negara yang bisa menjadi pihak berperkara</li>
+        <li>Didirikan berdasarkan Piagam PBB 1945</li>
+      </ul>
+    </div>
+
+    <div class="materi-card merah">
+      <h3>🌍 Sengketa & Konflik Antarnegara</h3>
+      <ul>
+        <li>Sengketa internasional = perselisihan antara 2+ negara</li>
+        <li>Cara damai: Negosiasi, Mediasi, Konsiliasi, Arbitrase, Peradilan Internasional</li>
+        <li>Dasar hukum: Piagam PBB Pasal 2 ayat (3) dan Pasal 33</li>
+        <li>Indonesia menganut politik luar negeri <strong>bebas aktif</strong></li>
+      </ul>
+    </div>
+
+    <div class="materi-card kuning">
+      <h3>🌐 Globalisasi</h3>
+      <ul>
+        <li>Proses mendunia yang menghilangkan batasan antarnegara</li>
+        <li><strong>Positif:</strong> kemajuan teknologi, akses informasi, kerja sama internasional</li>
+        <li><strong>Negatif:</strong> lunturnya budaya lokal, individualisme, konsumerisme</li>
+        <li>Pancasila sebagai filter menghadapi globalisasi</li>
+        <li>Sikap: "berpikir global, bertindak lokal"</li>
+      </ul>
+    </div>
+
+    <div class="materi-card hijau">
+      <h3>🤝 Gotong Royong</h3>
+      <ul>
+        <li>Cerminan sila ke-3 Pancasila: Persatuan Indonesia</li>
+        <li>Jenis: <strong>Tolong-menolong</strong> (individual) dan <strong>Kerja Bakti</strong> (umum)</li>
+        <li>Nilai: kerja sama sukarela, kepedulian, tanggung jawab sosial</li>
+        <li>Wujud nyata kewarganegaraan aktif</li>
+      </ul>
+    </div>
+
+    <div class="materi-card ungu">
+      <h3>🚫 Stereotip, Diskriminasi & Bullying</h3>
+      <ul>
+        <li><strong>Stereotip:</strong> proses kognitif menyederhanakan kelompok (gender, suku, pekerjaan)</li>
+        <li><strong>Diskriminasi:</strong> tindakan negatif berdasarkan keanggotaan kelompok (rasisme, seksisme, ageisme)</li>
+        <li><strong>Bullying/Perundungan:</strong> penindasan berulang—fisik, verbal, cyberbullying</li>
+        <li>Ketiganya saling berkaitan dan merusak kohesi sosial</li>
+      </ul>
+    </div>
+
+    <div class="materi-card biru">
+      <h3>📜 Norma & Regulasi</h3>
+      <ul>
+        <li><strong>Norma:</strong> kesepakatan masyarakat yang wajib dipatuhi</li>
+        <li><strong>Regulasi:</strong> aturan hukum yang diberlakukan secara sah</li>
+        <li>Sanksi: moral, agama, hukum (pidana/perdata)</li>
+        <li>Pencegahan: pendidikan dini, sosialisasi, keteladanan, penegakan tegas</li>
+      </ul>
+    </div>
+
+    <div class="materi-card merah">
+      <h3>🏳️ Nasionalisme</h3>
+      <ul>
+        <li>Rasa cinta dan bangga terhadap bangsa dan negara</li>
+        <li>Tantangan: pengaruh budaya asing, radikalisme, lunturnya identitas</li>
+        <li>Wujud: mencintai produk dalam negeri, menjaga persatuan, bela negara</li>
+        <li>Pancasila sebagai landasan nasionalisme Indonesia</li>
+      </ul>
+    </div>
+
+    <div class="materi-card kuning">
+      <h3>🌺 Budaya Nusantara & Interaksi Global</h3>
+      <ul>
+        <li>Kearifan lokal dikenali via sastra, adat, bahasa</li>
+        <li>Promosi budaya: konten kreatif di media sosial</li>
+        <li>Cross Cultural Understanding: kemampuan mengenali & bereaksi tepat terhadap budaya lain</li>
+        <li>Kolaborasi budaya: daring/luring dengan negara lain</li>
+      </ul>
+    </div>
+
+    <div class="materi-card hijau">
+      <h3>🇺🇳 Hak Veto PBB</h3>
+      <ul>
+        <li>Hak istimewa 5 anggota tetap Dewan Keamanan PBB</li>
+        <li>Anggota Tetap: AS, Rusia, China, Inggris, Prancis (P5)</li>
+        <li>Satu veto cukup untuk menolak resolusi</li>
+        <li>Sering dikritik karena menghambat perdamaian</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <p style="font-size:0.85rem;color:#888;text-align:center;">Pilih tab di atas untuk mulai mengerjakan soal ✏️</p>
+</section>
+
+<!-- ===================== PILIHAN GANDA ===================== -->
+<section class="section" id="pilgan">
+  <div class="quiz-header">
+    <h2 class="section-title">Pilihan Ganda</h2>
+    <span class="score-badge" id="pg-score">0 / 0</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="pg-progress" style="width:0%"></div></div>
+  <div id="pg-questions"></div>
+  <div class="nav-row">
+    <span class="q-counter" id="pg-counter"></span>
+    <button class="btn btn-primary" id="pg-check-btn" onclick="checkPG()">Periksa Jawaban</button>
+  </div>
+</section>
+
+<!-- ===================== BENAR SALAH ===================== -->
+<section class="section" id="benarsalah">
+  <div class="quiz-header">
+    <h2 class="section-title">Benar / Salah</h2>
+    <span class="score-badge" id="bs-score">0 / 0</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="bs-progress" style="width:0%"></div></div>
+  <div id="bs-questions"></div>
+  <div class="nav-row">
+    <span class="q-counter" id="bs-counter"></span>
+    <button class="btn btn-primary" id="bs-check-btn" onclick="checkBS()">Periksa Jawaban</button>
+  </div>
+</section>
+
+<!-- ===================== TTS ===================== -->
+<section class="section" id="tts">
+  <h2 class="section-title">Teka-Teki Silang</h2>
+  <p class="section-sub">Isi TTS berdasarkan petunjuk di bawah. Ketik di kotak input, lalu klik Periksa.</p>
+  <div class="tts-container">
+    <canvas id="tts-canvas" style="display:none"></canvas>
+    <div id="tts-grid-container"></div>
+  </div>
+  <div id="tts-clues-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <span id="tts-score-text" style="font-weight:600;color:#555"></span>
+    <div style="display:flex;gap:0.8rem">
+      <button class="btn btn-secondary" onclick="resetTTS()">Reset</button>
+      <button class="btn btn-primary" onclick="checkTTS()">Periksa TTS</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEMUKAN KATA ===================== -->
+<section class="section" id="temukan">
+  <h2 class="section-title">Temukan Kata Tersembunyi</h2>
+  <p class="section-sub">Klik sel awal lalu sel akhir untuk memilih kata. Temukan semua 5 kata!</p>
+  <div style="overflow-x:auto">
+    <div id="ws-grid-container" class="ws-grid"></div>
+  </div>
+  <div class="word-list" id="ws-word-list"></div>
+  <div class="nav-row" style="margin-top:1rem">
+    <span id="ws-status" style="font-weight:600;color:#555"></span>
+    <button class="btn btn-secondary" onclick="resetWordSearch()">Reset</button>
+  </div>
+</section>
+
+<!-- ===================== CARI & TEMUKAN ===================== -->
+<section class="section" id="carikata">
+  <h2 class="section-title">Cari & Temukan Kata</h2>
+  <p class="section-sub">Cocokkan istilah dengan definisinya!</p>
+  <div id="match-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <span id="match-score" style="font-weight:600;color:#555"></span>
+    <div style="display:flex;gap:0.8rem">
+      <button class="btn btn-secondary" onclick="resetMatch()">Reset</button>
+      <button class="btn btn-primary" onclick="checkMatch()">Periksa</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===================== DATA =====================
+
+const pgQuestions = [
+  {
+    q: "Mahkamah Internasional (International Court of Justice) berkedudukan di kota...",
+    opts: ["A. New York, Amerika Serikat", "B. Jenewa, Swiss", "C. Den Haag, Belanda", "D. Brussels, Belgia", "E. Strasbourg, Prancis"],
+    ans: 2,
+    explain: "ICJ berkedudukan di Den Haag (The Hague), Belanda, dan merupakan organ utama PBB untuk menyelesaikan sengketa hukum antarnegara."
+  },
+  {
+    q: "Konflik antarnegara yang diselesaikan melalui pihak ketiga yang netral sebagai penengah tanpa memihak disebut...",
+    opts: ["A. Negosiasi", "B. Arbitrase", "C. Mediasi", "D. Konsiliasi", "E. Litigasi"],
+    ans: 2,
+    explain: "Mediasi adalah penyelesaian sengketa dengan bantuan pihak ketiga yang netral sebagai penengah. Berbeda dengan arbitrase yang keputusannya mengikat."
+  },
+  {
+    q: "Dampak NEGATIF globalisasi yang paling mengancam kelestarian budaya bangsa Indonesia adalah...",
+    opts: ["A. Kemajuan ilmu pengetahuan dan teknologi", "B. Meningkatnya kerja sama internasional", "C. Lunturnya budaya lokal akibat budaya asing", "D. Akses informasi yang semakin cepat", "E. Terbukanya pasar ekspor internasional"],
+    ans: 2,
+    explain: "Globalisasi membawa arus budaya asing yang dapat menggeser budaya lokal, terutama di kalangan generasi muda yang lebih mengenal budaya luar."
+  },
+  {
+    q: "Kegiatan gotong royong yang bersifat individual dan didasari rasa kepedulian sesama, seperti membantu tetangga yang sedang berduka, disebut...",
+    opts: ["A. Kerja bakti", "B. Tolong-menolong", "C. Swadaya", "D. Musyawarah", "E. Sambatan"],
+    ans: 1,
+    explain: "Tolong-menolong bersifat individual dan didasari kepedulian antar sesama, contohnya membantu tetangga pesta/kematian. Kerja bakti lebih ke kepentingan umum."
+  },
+  {
+    q: "Stereotip adalah proses yang bersifat...",
+    opts: ["A. Emosional dan selalu disengaja untuk melecehkan", "B. Kognitif dan tidak selalu mengarah pada tindakan melecehkan", "C. Fisik dan menimbulkan luka langsung", "D. Hukum dan diatur dalam undang-undang", "E. Spiritual dan berkaitan dengan keyakinan"],
+    ans: 1,
+    explain: "Menurut definisi, stereotip adalah proses KOGNITIF, bukan emosional, sehingga tidak selalu disengaja untuk melecehkan, melainkan menyederhanakan dunia sosial."
+  }
+];
+
+const bsQuestions = [
+  { q: "Mediasi dalam penyelesaian sengketa internasional melibatkan pihak ketiga yang keputusannya bersifat mengikat bagi kedua pihak.", ans: false, explain: "SALAH. Mediasi melibatkan pihak ketiga yang netral sebagai PENENGAH saja—keputusannya tidak mengikat. Yang mengikat adalah Arbitrase." },
+  { q: "Hak veto di PBB dimiliki oleh 5 anggota tetap Dewan Keamanan: Amerika Serikat, Rusia, Tiongkok, Inggris, dan Prancis.", ans: true, explain: "BENAR. Kelima negara ini disebut P5 dan memiliki hak veto yang dapat menolak resolusi Dewan Keamanan PBB." },
+  { q: "Gotong royong hanya tercermin dalam sila ke-3 Pancasila (Persatuan Indonesia) dan tidak ada kaitannya dengan sila lain.", ans: false, explain: "SALAH. Menurut Muhadjir, nilai gotong royong ada di semua sila: sila 1 (ibadah), sila 2 (kemanusiaan), sila 3 (persatuan), sila 4 (musyawarah), sila 5 (keadilan sosial)." },
+  { q: "Seseorang yang melakukan pencurian dapat dikenai sanksi berdasarkan Pasal 362 KUHP.", ans: true, explain: "BENAR. Pasal 362 KUHP mengatur tentang pencurian dengan ancaman pidana penjara maksimal 5 tahun." },
+  { q: "Pelanggaran norma hanya mengakibatkan sanksi hukum formal dari negara.", ans: false, explain: "SALAH. Pelanggaran norma juga dapat mengakibatkan sanksi moral, agama, dikucilkan dari masyarakat, dan kehilangan reputasi." },
+  { q: "Nasionalisme yang sehat mendorong warga negara untuk mencintai produk dalam negeri dan mengutamakan kepentingan bangsa.", ans: true, explain: "BENAR. Salah satu wujud nyata nasionalisme adalah mencintai dan menggunakan produk dalam negeri sebagai bentuk dukungan terhadap ekonomi bangsa." },
+  { q: "Radikalisme dan intoleransi merupakan tantangan berpancasila di era global yang dapat mengancam persatuan bangsa.", ans: true, explain: "BENAR. Paham ekstrem dan intoleransi merupakan salah satu tantangan terbesar Pancasila di era globalisasi karena dapat memecah persatuan." },
+  { q: "Globalisasi hanya membawa dampak positif bagi bangsa Indonesia karena membuka akses terhadap teknologi dan informasi.", ans: false, explain: "SALAH. Globalisasi membawa dampak POSITIF sekaligus NEGATIF. Dampak negatifnya antara lain lunturnya budaya lokal, individualisme, dan konsumerisme." },
+  { q: "Cyberbullying adalah bentuk perundungan yang hanya terjadi di media sosial dan tidak memengaruhi kehidupan nyata korban.", ans: false, explain: "SALAH. Cyberbullying terjadi di berbagai platform digital (media sosial, game online, dll.) dan memiliki dampak nyata terhadap psikologi dan kesehatan mental korban." },
+  { q: "Stereotip terhadap suatu kelompok etnis dapat bersifat positif maupun negatif.", ans: true, explain: "BENAR. Contoh stereotip positif: 'Etnis Minang pintar berdagang.' Contoh negatif: 'Orang Timur cenderung temperamen.' Keduanya tetap mereduksi individu." }
+];
+
+// TTS Data
+const ttsWords = [
+  { word: "NASIONALISME", clue: "Mendatar 1", dir: "across", row: 0, col: 0, num: 1, clueText: "Rasa cinta, bangga, dan setia terhadap bangsa dan negara sendiri." },
+  { word: "NORMA", clue: "Menurun 1", dir: "down", row: 0, col: 0, num: 1, clueText: "Aturan atau kesepakatan yang mengatur tingkah laku dalam masyarakat." },
+  { word: "TRADISI", clue: "Menurun 2", dir: "down", row: 0, col: 4, num: 2, clueText: "Kebiasaan yang diwariskan secara turun-temurun dalam masyarakat." },
+  { word: "BUDAYA", clue: "Mendatar 2", dir: "across", row: 3, col: 0, num: 3, clueText: "Hasil cipta, rasa, dan karsa manusia yang menjadi ciri khas suatu masyarakat." },
+  { word: "MEDIASI", clue: "Mendatar 3", dir: "across", row: 5, col: 0, num: 4, clueText: "Penyelesaian sengketa dengan pihak ketiga netral sebagai penengah (tidak mengikat)." },
+  { word: "ARBITRASE", clue: "Mendatar 4", dir: "across", row: 7, col: 0, num: 5, clueText: "Penyelesaian sengketa internasional di mana keputusan pihak ketiga bersifat mengikat." },
+  { word: "VETO", clue: "Menurun 3", dir: "down", row: 5, col: 4, num: 6, clueText: "Hak istimewa anggota tetap Dewan Keamanan PBB untuk menolak suatu resolusi." },
+  { word: "DISKRIMINASI", clue: "Mendatar 5", dir: "across", row: 9, col: 0, num: 7, clueText: "Perilaku negatif terhadap anggota kelompok tertentu semata-mata karena keanggotaan mereka." },
+  { word: "GLOBALISASI", clue: "Menurun 4", dir: "down", row: 0, col: 8, num: 8, clueText: "Proses mendunia yang menghilangkan batas-batas antarnegara dalam berbagai bidang." },
+  { word: "STEREOTIP", clue: "Mendatar 6", dir: "across", row: 2, col: 0, num: 9, clueText: "Proses kognitif menyederhanakan penilaian terhadap suatu kelompok sosial." },
+  { word: "PANCASILA", clue: "Menurun 5", dir: "down", row: 7, col: 7, num: 10, clueText: "Dasar negara dan ideologi bangsa Indonesia yang terdiri dari 5 sila." }
+];
+
+// Word Search Data
+const wsWords = ["MEDIASI", "NORMA", "VETO", "BUDAYA", "GOTONG"];
+const wsGridSize = 12;
+
+// Matching Data
+const matchItems = [
+  { term: "Negosiasi", def: "Perundingan langsung antara negara tanpa pihak ketiga" },
+  { term: "Hak Veto", def: "Hak menolak resolusi DK PBB milik 5 negara anggota tetap" },
+  { term: "Bullying", def: "Penindasan berulang dengan tujuan menyakiti korban" },
+  { term: "Globalisasi", def: "Proses keterhubungan antarnegara tanpa batas wilayah" },
+  { term: "Kerja Bakti", def: "Gotong royong untuk kepentingan umum bersama" }
+];
+
+// ===================== STATE =====================
+let pgAnswers = new Array(pgQuestions.length).fill(null);
+let pgChecked = false;
+let bsAnswers = new Array(bsQuestions.length).fill(null);
+let bsChecked = false;
+let wsSelection = [];
+let wsFound = [];
+let wsGrid = [];
+let matchSelected = { term: null, def: null };
+let matchDone = [];
+let ttsInputs = {};
+
+// ===================== TAB =====================
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===================== PILGAN =====================
+function renderPG() {
+  const cont = document.getElementById('pg-questions');
+  cont.innerHTML = '';
+  pgQuestions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.innerHTML = `
+      <div class="q-type-badge type-pg">Pilihan Ganda</div>
+      <div class="q-number">Soal ${i+1} dari ${pgQuestions.length} — Mahkamah / Konflik / Globalisasi / Gotong Royong / Stereotip</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="pg-opts-${i}">
+        ${q.opts.map((o,j) => `
+          <button class="option-btn" onclick="selectPG(${i},${j})" id="pg-opt-${i}-${j}">
+            <span class="option-circle">${String.fromCharCode(65+j)}</span>
+            ${o}
+          </button>`).join('')}
+      </div>
+      <div class="explanation" id="pg-exp-${i}"></div>
+    `;
+    cont.appendChild(card);
+  });
+  updatePGScore();
+}
+
+function selectPG(qi, oi) {
+  if (pgChecked) return;
+  pgAnswers[qi] = oi;
+  document.querySelectorAll(`#pg-opts-${qi} .option-btn`).forEach((b,j) => {
+    b.style.borderColor = j === oi ? 'var(--biru)' : '';
+    b.style.background = j === oi ? '#eff6ff' : '';
+    b.querySelector('.option-circle').style.background = j === oi ? 'var(--biru)' : '';
+    b.querySelector('.option-circle').style.color = j === oi ? 'white' : '';
+  });
+  updatePGScore();
+}
+
+function updatePGScore() {
+  const answered = pgAnswers.filter(a => a !== null).length;
+  document.getElementById('pg-score').textContent = `${answered} / ${pgQuestions.length}`;
+  document.getElementById('pg-progress').style.width = (answered/pgQuestions.length*100)+'%';
+  document.getElementById('pg-counter').textContent = `${answered} soal dijawab`;
+}
+
+function checkPG() {
+  if (pgAnswers.some(a => a === null)) { alert('Jawab semua soal terlebih dahulu!'); return; }
+  pgChecked = true;
+  let correct = 0;
+  pgQuestions.forEach((q, i) => {
+    const btns = document.querySelectorAll(`#pg-opts-${qi => qi}` );
+    for(let j=0; j<q.opts.length; j++) {
+      const btn = document.getElementById(`pg-opt-${i}-${j}`);
+      btn.disabled = true;
+      btn.querySelector('.option-circle').style.background = '';
+      btn.querySelector('.option-circle').style.color = '';
+      btn.style.borderColor = '';
+      btn.style.background = '';
+      if (j === q.ans) btn.classList.add('correct');
+      else if (j === pgAnswers[i] && j !== q.ans) btn.classList.add('incorrect');
+    }
+    if (pgAnswers[i] === q.ans) correct++;
+    const exp = document.getElementById(`pg-exp-${i}`);
+    exp.innerHTML = `<strong>${pgAnswers[i] === q.ans ? '✅ Benar!' : '❌ Salah.'}</strong> ${q.explain}`;
+    exp.classList.add('show');
+  });
+  document.getElementById('pg-score').textContent = `${correct} / ${pgQuestions.length}`;
+  document.getElementById('pg-progress').style.width = (correct/pgQuestions.length*100)+'%';
+  document.getElementById('pg-check-btn').textContent = `Nilai: ${Math.round(correct/pgQuestions.length*100)}/100`;
+  document.getElementById('pg-check-btn').style.background = correct >= 3 ? 'var(--hijau)' : 'var(--merah)';
+}
+
+// ===================== BENAR SALAH =====================
+function renderBS() {
+  const cont = document.getElementById('bs-questions');
+  cont.innerHTML = '';
+  bsQuestions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.innerHTML = `
+      <div class="q-type-badge type-bs">Benar / Salah</div>
+      <div class="q-number">Soal ${i+1} dari ${bsQuestions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="tf-options">
+        <button class="tf-btn" onclick="selectBS(${i}, true)" id="bs-t-${i}">✅ BENAR</button>
+        <button class="tf-btn" onclick="selectBS(${i}, false)" id="bs-f-${i}">❌ SALAH</button>
+      </div>
+      <div class="explanation" id="bs-exp-${i}"></div>
+    `;
+    cont.appendChild(card);
+  });
+  updateBSScore();
+}
+
+function selectBS(qi, val) {
+  if (bsChecked) return;
+  bsAnswers[qi] = val;
+  document.getElementById(`bs-t-${qi}`).style.borderColor = val === true ? 'var(--hijau)' : '';
+  document.getElementById(`bs-t-${qi}`).style.background = val === true ? '#f0fdf4' : '';
+  document.getElementById(`bs-f-${qi}`).style.borderColor = val === false ? 'var(--merah)' : '';
+  document.getElementById(`bs-f-${qi}`).style.background = val === false ? '#fff5f5' : '';
+  updateBSScore();
+}
+
+function updateBSScore() {
+  const answered = bsAnswers.filter(a => a !== null).length;
+  document.getElementById('bs-score').textContent = `${answered} / ${bsQuestions.length}`;
+  document.getElementById('bs-progress').style.width = (answered/bsQuestions.length*100)+'%';
+  document.getElementById('bs-counter').textContent = `${answered} soal dijawab`;
+}
+
+function checkBS() {
+  if (bsAnswers.some(a => a === null)) { alert('Jawab semua soal terlebih dahulu!'); return; }
+  bsChecked = true;
+  let correct = 0;
+  bsQuestions.forEach((q, i) => {
+    const tBtn = document.getElementById(`bs-t-${i}`);
+    const fBtn = document.getElementById(`bs-f-${i}`);
+    tBtn.disabled = true; fBtn.disabled = true;
+    tBtn.style.borderColor = ''; tBtn.style.background = '';
+    fBtn.style.borderColor = ''; fBtn.style.background = '';
+    const userAns = bsAnswers[i];
+    if (userAns === q.ans) {
+      correct++;
+      (q.ans ? tBtn : fBtn).classList.add('correct');
+    } else {
+      (userAns ? tBtn : fBtn).classList.add('incorrect');
+      (q.ans ? tBtn : fBtn).classList.add('correct');
+    }
+    const exp = document.getElementById(`bs-exp-${i}`);
+    exp.innerHTML = `<strong>${userAns === q.ans ? '✅ Benar!' : '❌ Salah.'}</strong> ${q.explain}`;
+    exp.classList.add('show');
+  });
+  document.getElementById('bs-score').textContent = `${correct} / ${bsQuestions.length}`;
+  document.getElementById('bs-progress').style.width = (correct/bsQuestions.length*100)+'%';
+  document.getElementById('bs-check-btn').textContent = `Nilai: ${Math.round(correct/bsQuestions.length*100)}/100`;
+  document.getElementById('bs-check-btn').style.background = correct >= 7 ? 'var(--hijau)' : 'var(--merah)';
+}
+
+// ===================== TTS =====================
+// Simplified TTS: text-based grid with inputs
+const ttsClues = {
+  across: [
+    { num: 1, clue: "Rasa cinta, bangga, dan setia terhadap bangsa dan negara sendiri (12 huruf)", answer: "NASIONALISME", row: 0, col: 0 },
+    { num: 3, clue: "Hasil cipta, rasa, dan karsa manusia yang menjadi ciri khas suatu bangsa (6 huruf)", answer: "BUDAYA", row: 3, col: 0 },
+    { num: 4, clue: "Penyelesaian sengketa dengan pihak ketiga netral sebagai penengah, keputusan tidak mengikat (7 huruf)", answer: "MEDIASI", row: 5, col: 0 },
+    { num: 5, clue: "Penyelesaian sengketa di mana keputusan pihak ketiga bersifat mengikat (9 huruf)", answer: "ARBITRASE", row: 7, col: 0 },
+    { num: 7, clue: "Perilaku negatif terhadap anggota kelompok tertentu karena keanggotaannya (12 huruf)", answer: "DISKRIMINASI", row: 9, col: 0 },
+    { num: 9, clue: "Proses kognitif menyederhanakan penilaian terhadap suatu kelompok sosial (9 huruf)", answer: "STEREOTIP", row: 2, col: 0 },
+  ],
+  down: [
+    { num: 1, clue: "Aturan atau kesepakatan yang mengatur tingkah laku masyarakat (5 huruf)", answer: "NORMA", row: 0, col: 0 },
+    { num: 2, clue: "Kebiasaan yang diwariskan turun-temurun dalam masyarakat (7 huruf)", answer: "TRADISI", row: 0, col: 4 },
+    { num: 6, clue: "Hak istimewa menolak resolusi milik 5 anggota tetap DK PBB (4 huruf)", answer: "VETO", row: 5, col: 4 },
+    { num: 8, clue: "Proses mendunia yang menghilangkan batas antarnegara (11 huruf)", answer: "GLOBALISASI", row: 0, col: 8 },
+    { num: 10, clue: "Dasar negara Indonesia yang terdiri dari 5 sila (9 huruf)", answer: "PANCASILA", row: 7, col: 7 },
+  ]
+};
+
+function renderTTS() {
+  const container = document.getElementById('tts-clues-container');
+  let html = '<div class="tts-clues"><div class="tts-clue-section"><h4>→ Mendatar</h4>';
+  ttsClues.across.forEach(c => {
+    html += `<div class="tts-clue">
+      <span class="tts-clue-num">${c.num}.</span>
+      <span style="flex:1">${c.clue}</span>
+      <input class="tts-input" id="tts-a-${c.num}" maxlength="${c.answer.length}" placeholder="${'_'.repeat(c.answer.length)}" oninput="this.value=this.value.toUpperCase()">
+    </div>`;
+  });
+  html += '</div><div class="tts-clue-section" style="margin-top:1.2rem"><h4>↓ Menurun</h4>';
+  ttsClues.down.forEach(c => {
+    html += `<div class="tts-clue">
+      <span class="tts-clue-num">${c.num}.</span>
+      <span style="flex:1">${c.clue}</span>
+      <input class="tts-input" id="tts-d-${c.num}" maxlength="${c.answer.length}" placeholder="${'_'.repeat(c.answer.length)}" oninput="this.value=this.value.toUpperCase()">
+    </div>`;
+  });
+  html += '</div></div>';
+  container.innerHTML = html;
+
+  // Simple visual grid representation
+  const gridDiv = document.getElementById('tts-grid-container');
+  const ROWS = 11, COLS = 13;
+  const cells = Array.from({length:ROWS}, ()=>Array(COLS).fill(null));
+  // Fill cells
+  ttsClues.across.forEach(c => {
+    for(let i=0;i<c.answer.length;i++) cells[c.row][c.col+i] = {letter:c.answer[i], dir:'a', clueNum:i===0?c.num:null};
+  });
+  ttsClues.down.forEach(c => {
+    for(let i=0;i<c.answer.length;i++) {
+      if(!cells[c.row+i]) cells[c.row+i] = Array(COLS).fill(null);
+      cells[c.row+i][c.col] = {letter:c.answer[i], dir:'d', clueNum:i===0?c.num:(cells[c.row+i][c.col]?cells[c.row+i][c.col].clueNum:null)};
+    }
+  });
+
+  let gridHtml = '<div class="tts-grid" style="margin-bottom:1rem">';
+  for(let r=0;r<ROWS;r++) {
+    gridHtml += '<div class="tts-row">';
+    for(let c=0;c<COLS;c++) {
+      const cell = cells[r][c];
+      if(!cell) {
+        gridHtml += '<div class="tts-cell black"></div>';
+      } else {
+        const numAttr = cell.clueNum ? `data-num="${cell.clueNum}"` : '';
+        gridHtml += `<div class="tts-cell ${cell.clueNum?'number':''}" ${numAttr} id="tts-cell-${r}-${c}">?</div>`;
+      }
+    }
+    gridHtml += '</div>';
+  }
+  gridHtml += '</div>';
+  gridDiv.innerHTML = gridHtml;
+}
+
+function checkTTS() {
+  let correct = 0, total = ttsClues.across.length + ttsClues.down.length;
+  ttsClues.across.forEach(c => {
+    const val = document.getElementById(`tts-a-${c.num}`)?.value?.trim().toUpperCase() || '';
+    const inp = document.getElementById(`tts-a-${c.num}`);
+    if(val === c.answer) { correct++; if(inp) inp.style.borderBottomColor='var(--hijau)'; }
+    else { if(inp) inp.style.borderBottomColor='var(--merah)'; }
+    // Fill grid
+    for(let i=0;i<c.answer.length;i++) {
+      const cell = document.getElementById(`tts-cell-${c.row}-${c.col+i}`);
+      if(cell) { cell.textContent = val[i]||'?'; cell.className = cell.className.replace(/correct-tts|wrong-tts/g,''); cell.classList.add(val[i]===c.answer[i]?'correct-tts':'wrong-tts'); }
+    }
+  });
+  ttsClues.down.forEach(c => {
+    const val = document.getElementById(`tts-d-${c.num}`)?.value?.trim().toUpperCase() || '';
+    const inp = document.getElementById(`tts-d-${c.num}`);
+    if(val === c.answer) { correct++; if(inp) inp.style.borderBottomColor='var(--hijau)'; }
+    else { if(inp) inp.style.borderBottomColor='var(--merah)'; }
+    for(let i=0;i<c.answer.length;i++) {
+      const row = c.row+i;
+      if(!document.getElementById(`tts-cell-${row}-${c.col}`)) continue;
+      const cell = document.getElementById(`tts-cell-${row}-${c.col}`);
+      if(cell && cell.className.indexOf('black')===-1) {
+        if(!cell.className.includes('correct-tts')) { cell.textContent = val[i]||'?'; cell.classList.add(val[i]===c.answer[i]?'correct-tts':'wrong-tts'); }
+      }
+    }
+  });
+  document.getElementById('tts-score-text').textContent = `✅ Benar: ${correct} / ${total} | Nilai: ${Math.round(correct/total*100)}/100`;
+}
+
+function resetTTS() {
+  document.querySelectorAll('.tts-input').forEach(i => { i.value=''; i.style.borderBottomColor=''; });
+  document.querySelectorAll('.tts-cell:not(.black)').forEach(c => { c.textContent='?'; c.className='tts-cell number'; });
+  document.getElementById('tts-score-text').textContent='';
+}
+
+// ===================== WORD SEARCH =====================
+const WS_WORDS = ["MEDIASI","NORMA","VETO","BUDAYA","GOTONG"];
+const WS_SIZE = 12;
+
+function generateWordSearch() {
+  wsGrid = Array.from({length:WS_SIZE}, ()=>Array(WS_SIZE).fill(''));
+  wsFound = [];
+  const placements = [];
+
+  const directions = [[0,1],[1,0],[1,1]];
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  WS_WORDS.forEach(word => {
+    let placed = false;
+    for(let tries=0;tries<200&&!placed;tries++) {
+      const dir = directions[Math.floor(Math.random()*directions.length)];
+      const maxR = WS_SIZE - (dir[0]*word.length);
+      const maxC = WS_SIZE - (dir[1]*word.length);
+      if(maxR<=0||maxC<=0) continue;
+      const r = Math.floor(Math.random()*maxR);
+      const c = Math.floor(Math.random()*maxC);
+      let ok = true;
+      for(let i=0;i<word.length;i++) {
+        const cr=r+dir[0]*i, cc=c+dir[1]*i;
+        if(wsGrid[cr][cc]!==''&&wsGrid[cr][cc]!==word[i]) { ok=false; break; }
+      }
+      if(ok) {
+        const cells=[];
+        for(let i=0;i<word.length;i++) {
+          const cr=r+dir[0]*i, cc=c+dir[1]*i;
+          wsGrid[cr][cc]=word[i];
+          cells.push([cr,cc]);
+        }
+        placements.push({word,cells});
+        placed=true;
+      }
+    }
+  });
+
+  // Fill blanks
+  for(let r=0;r<WS_SIZE;r++) for(let c=0;c<WS_SIZE;c++) {
+    if(!wsGrid[r][c]) wsGrid[r][c]=letters[Math.floor(Math.random()*letters.length)];
+  }
+
+  return placements;
+}
+
+let wsPlacements = [];
+let wsSelectStart = null;
+
+function renderWordSearch() {
+  wsPlacements = generateWordSearch();
+  const container = document.getElementById('ws-grid-container');
+  container.innerHTML = '';
+  container.style.display = 'inline-grid';
+  container.style.gap = '2px';
+
+  for(let r=0;r<WS_SIZE;r++) {
+    const row = document.createElement('div');
+    row.className = 'ws-row';
+    for(let c=0;c<WS_SIZE;c++) {
+      const cell = document.createElement('div');
+      cell.className = 'ws-cell';
+      cell.textContent = wsGrid[r][c];
+      cell.dataset.r = r; cell.dataset.c = c;
+      cell.onclick = () => wsClickCell(r, c);
+      row.appendChild(cell);
+    }
+    container.appendChild(row);
+  }
+
+  const wordList = document.getElementById('ws-word-list');
+  wordList.innerHTML = WS_WORDS.map(w => `<div class="word-chip" id="ws-chip-${w}">${w}</div>`).join('');
+  document.getElementById('ws-status').textContent = '0 / '+WS_WORDS.length+' kata ditemukan';
+}
+
+function wsClickCell(r, c) {
+  if(wsSelectStart === null) {
+    wsSelectStart = [r,c];
+    document.querySelector(`[data-r="${r}"][data-c="${c}"]`).classList.add('selected');
+  } else {
+    const [r0,c0] = wsSelectStart;
+    wsSelectStart = null;
+    document.querySelectorAll('.ws-cell.selected').forEach(el => el.classList.remove('selected'));
+    
+    // Check if this matches any word placement
+    wsPlacements.forEach(p => {
+      if(wsFound.includes(p.word)) return;
+      const first = p.cells[0], last = p.cells[p.cells.length-1];
+      if((r0===first[0]&&c0===first[1]&&r===last[0]&&c===last[1])||(r0===last[0]&&c0===last[1]&&r===first[0]&&c===first[1])) {
+        wsFound.push(p.word);
+        p.cells.forEach(([cr,cc]) => {
+          document.querySelector(`[data-r="${cr}"][data-c="${cc}"]`).classList.add('found');
+        });
+        document.getElementById(`ws-chip-${p.word}`)?.classList.add('found');
+        document.getElementById('ws-status').textContent = wsFound.length+' / '+WS_WORDS.length+' kata ditemukan';
+        if(wsFound.length===WS_WORDS.length) {
+          setTimeout(()=>alert('🎉 Luar biasa! Kamu menemukan semua kata!'),100);
+        }
+      }
+    });
+  }
+}
+
+function resetWordSearch() {
+  wsSelectStart = null;
+  wsFound = [];
+  renderWordSearch();
+}
+
+// ===================== MATCHING =====================
+const matchDefs = matchItems.map(i => i.def).sort(()=>Math.random()-0.5);
+
+let matchState = { selectedTerm: null, pairs: {} };
+
+function renderMatch() {
+  matchState = { selectedTerm: null, pairs: {} };
+  const container = document.getElementById('match-container');
+  const shuffledDefs = [...matchItems.map(i=>i.def)].sort(()=>Math.random()-0.5);
+  
+  let html = '<div class="match-container"><div class="match-col" id="match-terms">';
+  matchItems.forEach((item,i) => {
+    html += `<div class="match-item" id="match-t-${i}" onclick="selectMatchTerm(${i})">${item.term}</div>`;
+  });
+  html += '</div><div class="match-col" id="match-defs">';
+  shuffledDefs.forEach((def,i) => {
+    const escapedDef = def.replace(/'/g,"&#39;");
+    html += `<div class="match-item" id="match-d-${i}" onclick="selectMatchDef('${escapedDef}')">${def}</div>`;
+  });
+  html += '</div></div>';
+  html += '<p style="margin-top:1rem;font-size:0.85rem;color:#888">👆 Klik istilah di kiri, lalu klik definisi yang sesuai di kanan.</p>';
+  container.innerHTML = html;
+  document.getElementById('match-score').textContent = '';
+}
+
+function selectMatchTerm(idx) {
+  if(matchState.pairs[idx] !== undefined) return;
+  document.querySelectorAll('#match-terms .match-item').forEach(el => el.classList.remove('selected'));
+  matchState.selectedTerm = idx;
+  document.getElementById(`match-t-${idx}`).classList.add('selected');
+}
+
+function selectMatchDef(def) {
+  if(matchState.selectedTerm === null) return;
+  const termIdx = matchState.selectedTerm;
+  const termEl = document.getElementById(`match-t-${termIdx}`);
+  
+  // Find def element
+  const defEls = document.querySelectorAll('#match-defs .match-item');
+  let defEl = null;
+  defEls.forEach(el => { if(el.textContent === def) defEl = el; });
+  if(!defEl || defEl.classList.contains('matched')) return;
+  
+  // Check if correct
+  const correct = matchItems[termIdx].def === def;
+  matchState.pairs[termIdx] = { def, correct };
+  
+  termEl.classList.remove('selected');
+  if(correct) {
+    termEl.classList.add('matched');
+    defEl.classList.add('matched');
+  } else {
+    termEl.classList.add('wrong-match');
+    defEl.classList.add('wrong-match');
+    setTimeout(() => {
+      termEl.classList.remove('wrong-match');
+      defEl.classList.remove('wrong-match');
+      delete matchState.pairs[termIdx];
+    }, 1000);
+  }
+  matchState.selectedTerm = null;
+  
+  const matched = Object.values(matchState.pairs).filter(p=>p.correct).length;
+  if(matched === matchItems.length) {
+    document.getElementById('match-score').textContent = `🎉 Semua pasangan ditemukan! Nilai: 100/100`;
+    document.getElementById('match-score').style.color = 'var(--hijau)';
+  } else {
+    document.getElementById('match-score').textContent = `${matched} / ${matchItems.length} pasangan benar`;
+  }
+}
+
+function checkMatch() {
+  const matched = Object.values(matchState.pairs).filter(p=>p&&p.correct).length;
+  document.getElementById('match-score').textContent = `✅ ${matched} / ${matchItems.length} benar | Nilai: ${Math.round(matched/matchItems.length*100)}/100`;
+}
+
+function resetMatch() {
+  renderMatch();
+}
+
+// ===================== INIT =====================
+renderPG();
+renderBS();
+renderTTS();
+renderWordSearch();
+renderMatch();
+</script>
+</body>
+</html>
